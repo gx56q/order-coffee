@@ -112,15 +112,20 @@ function closeCoffee(e) {
     if (count === 1) {
         return;
     }
-    let numOfDelCoffee = getCoffeeNumber(e);
-    let listOfCoffee = e.parentNode;
     e.parentNode.removeChild(e);
-    for (const coffee of listOfCoffee.querySelectorAll(".beverage")) {
-        let numOfCoffee = getCoffeeNumber(coffee);
-        if (numOfCoffee > numOfDelCoffee) {
-            replaceCoffeeFields(coffee, numOfCoffee);
-        }
-    }
+    updateFieldsetNumbers();
+}
+
+function updateFieldsetNumbers() {
+    const fieldsets = document.querySelectorAll(".beverage");
+    fieldsets.forEach((fieldset, index) => {
+        const number = index + 1;
+        fieldset.querySelector("legend").textContent = `Напиток №${number}`;
+        fieldset.querySelectorAll("input[type=text], textarea").forEach(input => {
+            const name = input.name.replace(/\d+/, number);
+            input.name = name;
+        });
+    });
 }
 
 function getCoffeeNumber(element) {
