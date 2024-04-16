@@ -65,13 +65,10 @@ function generateTable(count) {
     let table = document.querySelector("table");
     let rows = '<tr><th>Напиток</th><th>Молоко</th><th>Дополнительно</th><th>Комментарий</th></tr>';
     for (let i = 1; i <= count; i++) {
-        const type = formData.get(`type${i}`);
-        if (type) {
         rows += "\n<tr><td>" + MENU[formData.get(`type${i}`)] + "</td>" +
             "<td>" + MENU[formData.get(`milk${i}`)] + "</td>" +
             "<td>" + makeListOfOptions(formData.getAll(`options${i}`)) + "</td>" +
             "<td>" + formData.get(`textarea${i}`) + "</td></tr>";
-        }
     }
     table.innerHTML = rows;
     return table;
