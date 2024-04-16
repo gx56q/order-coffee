@@ -18,7 +18,10 @@ const COFFEE_TEMPLATE = String(document.querySelector("fieldset").innerHTML);
 
 // Event listeners
 document.querySelector('.add-button').addEventListener("click", addNewCoffee);
-document.querySelectorAll("form")[1].onsubmit = submitOrder;
+document.querySelector(".submit-button").addEventListener("click", function(event) {
+    event.preventDefault();
+    submitOrder();
+});
 document.querySelectorAll("form")[0].onsubmit = validateOrderTime;
 
 // Functions
@@ -92,21 +95,6 @@ function validateOrderTime() {
 }
 
 
-
-function replaceCoffeeFields(coffee, coffeeNumber) {
-    const milkRegex = new RegExp(`milk${coffeeNumber}`, "g");
-    const optionsRegex = new RegExp(`options${coffeeNumber}`, "g");
-    const newCoffeeNumber = coffeeNumber - 1;
-
-    coffee.innerHTML = coffee.innerHTML
-        .replace(`Напиток №${coffeeNumber}`, `Напиток №${newCoffeeNumber}`)
-        .replace(milkRegex, `milk${newCoffeeNumber}`)
-        .replace(optionsRegex, `options${newCoffeeNumber}`)
-        .replace(`type${coffeeNumber}`, `type${newCoffeeNumber}`)
-        .replace(`textarea${coffeeNumber}`, `textarea${newCoffeeNumber}`);
-}
-
-
 function closeCoffee(e) {
     let count = document.querySelectorAll(".beverage").length;
     if (count === 1) {
@@ -126,12 +114,6 @@ function updateFieldsetNumbers() {
             input.name = name;
         });
     });
-}
-
-function getCoffeeNumber(element) {
-    const pattern = /Напиток №(\d+)/;
-    const match = element.innerHTML.match(pattern);
-    return match ? parseInt(match[1]) : 0;
 }
 
 function copyText(textarea) {
