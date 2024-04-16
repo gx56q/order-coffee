@@ -109,15 +109,16 @@ function replaceCoffeeFields(coffee, coffeeNumber) {
 
 function closeCoffee(e) {
     let count = document.querySelectorAll(".beverage").length;
-    if (count !== 1) {
-        let numOfDelCoffee = getCoffeeNumber(e);
-        let listOfCoffee = e.parentNode;
-        e.parentNode.remove(e);
-        for (const coffee of listOfCoffee.querySelectorAll(".beverage")) {
-            let numOfCoffee = getCoffeeNumber(coffee);
-            if (numOfCoffee > numOfDelCoffee) {
-                replaceCoffeeFields(coffee, numOfCoffee);
-            }
+    if (count === 1) {
+        return;
+    }
+    let numOfDelCoffee = getCoffeeNumber(e);
+    let listOfCoffee = e.parentNode;
+    e.parentNode.removeChild(e);
+    for (const coffee of listOfCoffee.querySelectorAll(".beverage")) {
+        let numOfCoffee = getCoffeeNumber(coffee);
+        if (numOfCoffee > numOfDelCoffee) {
+            replaceCoffeeFields(coffee, numOfCoffee);
         }
     }
 }
