@@ -65,10 +65,13 @@ function generateTable(count) {
     let table = document.querySelector("table");
     let rows = '<tr><th>Напиток</th><th>Молоко</th><th>Дополнительно</th><th>Комментарий</th></tr>';
     for (let i = 1; i <= count; i++) {
+        const type = formData.get(`type${i}`);
+        if (type) {
         rows += "\n<tr><td>" + MENU[formData.get(`type${i}`)] + "</td>" +
             "<td>" + MENU[formData.get(`milk${i}`)] + "</td>" +
             "<td>" + makeListOfOptions(formData.getAll(`options${i}`)) + "</td>" +
             "<td>" + formData.get(`textarea${i}`) + "</td></tr>";
+        }
     }
     table.innerHTML = rows;
     return table;
@@ -105,14 +108,11 @@ function closeCoffee(e) {
 }
 
 function updateFieldsetNumbers() {
-    const fieldsets = document.querySelectorAll(".beverage");
+    const form = document.forms[1]; // Получаем вторую форму на странице
+    const fieldsets = form.querySelectorAll(".beverage");
     fieldsets.forEach((fieldset, index) => {
         const number = index + 1;
-        fieldset.querySelector("legend").textContent = `Напиток №${number}`;
-        fieldset.querySelectorAll("input[type=text], textarea").forEach(input => {
-            const name = input.name.replace(/\d+/, number);
-            input.name = name;
-        });
+        fieldset.querySelector(".beverage-count").textContent = `Напиток №${number}`;
     });
 }
 
