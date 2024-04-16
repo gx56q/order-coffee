@@ -94,26 +94,44 @@ function validateOrderTime() {
     }
 }
 
-
 function closeCoffee(e) {
     let count = document.querySelectorAll(".beverage").length;
     if (count === 1) {
         return;
     }
+    let listOfCoffee = document.querySelectorAll(".beverage");
+    let numOfDelCoffee = getCoffeeNumber(e);
     e.parentNode.removeChild(e);
-    updateFieldsetNumbers();
+    updateFieldsetNumbers(listOfCoffee, numOfDelCoffee);
 }
 
-function updateFieldsetNumbers() {
-    const fieldsets = document.querySelectorAll(".beverage");
-    fieldsets.forEach((fieldset, index) => {
-        const number = index + 1;
-        fieldset.querySelector("legend").textContent = `Напиток №${number}`;
-        fieldset.querySelectorAll("input[type=text], textarea").forEach(input => {
-            const name = input.name.replace(/\d+/, number);
-            input.name = name;
-        });
+function updateFieldsetNumbers(listOfCoffee, numOfDelCoffee) {
+    listOfCoffee.forEach((fieldset) => {
+    let numOfCoffee = getCoffeeNumber(fieldset);
+    if (numOfCoffee > numOfDelCoffee) {
+        replaceCoffeeFields(fieldset, numOfCoffee);
+    }
     });
+}
+
+function replaceCoffeeFields(coffee, coffeeNumber) {
+    const milkRegex = new RegExp(`milk${coffeeNumber}`, "g");
+    const optionsRegex = new RegExp(`options${coffeeNumber}`, "g");
+    const newCoffeeNumber = coffeeNumber - 1;
+    console.log(coffee.innerHTML)
+    coffee.innerHTML = coffee.innerHTML
+        .replace(`Напиток №${coffeeNumber}`, `Напиток №${newCoffeeNumber}`)
+        .replace(milkRegex, `milk${newCoffeeNumber}`)
+        .replace(optionsRegex, `options${newCoffeeNumber}`)
+        .replace(`type${coffeeNumber}`, `type${newCoffeeNumber}`)
+        .replace(`textarea${coffeeNumber}`, `textarea${newCoffeeNumber}`);
+    console.log(coffee.innerHTML)
+}
+
+function getCoffeeNumber(element) {
+    const pattern = /Напиток №(\d+)/;
+    const match = element.innerHTML.match(pattern);
+    return match ? parseInt(match[1]) : 0;
 }
 
 function copyText(textarea) {
